@@ -1,0 +1,70 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+bool ok (int q[], int col){ 
+    for (int i = 0; i < col; i++){
+        if ((q[i] == q[col]) || ((col - i) == abs(q[col] - q[i]))){ // all tests in one
+    return false;
+    }
+  }
+    return true;
+}
+
+void backtrack (int &col){
+  col--; 
+  if (col == -1){
+    exit(0); 
+  }
+}
+
+void print (int q[]){
+  static int numberOfSolutions = 1;
+  cout << "Solution #" << numberOfSolutions++ << ":";
+  cout << endl;
+  // this func prints the array 
+    for(int i = 0; i < 8; i++){
+        for(int a = 0; a < 8; a++){
+            if(q[i] == a){ 
+            cout << "X ";
+        }
+            else { 
+            cout << "_ ";
+        } 
+    }
+    cout << endl;
+  }
+  cout << endl;
+}
+
+int main(){
+  int q[8] = {}; 
+  int col = 0; // this is where the first row and col is
+  q[0] = 0;
+
+  while (col >= 0){ // the loop ends if you do backtracking from the first col
+    col++; // this then moves onto the next col 
+
+    if (col == 8){ // this is the last col
+      print(q); // this calls print function and backtracks 
+      backtrack(col);
+    }
+    else{ 
+      q[col] = -1;
+    }
+
+    while (col >= 0){
+      q[col]++; // this is next row
+
+      if (q[col]== 8){ // is the last col, backtracks again
+        backtrack(col);
+      }
+      else { // then calls the ok function if the it returns true
+        if (ok(q, col) == true){ // goes back to the beginning of the outer loop
+          break;
+        }
+      }
+    }
+  }
+  return 0;
+}
